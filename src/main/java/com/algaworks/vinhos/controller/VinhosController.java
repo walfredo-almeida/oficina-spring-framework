@@ -26,7 +26,6 @@ public class VinhosController {
 	@Autowired
 	private Vinhos vinhos;
 	
-	 
 	
 	@DeleteMapping("/{id}")
 	public String remover(@PathVariable Long id, RedirectAttributes attributes) {
@@ -47,20 +46,17 @@ public class VinhosController {
 	
 	@GetMapping("/listaordenado")
 	public ModelAndView  pesquisarordenado(
-	      @RequestParam(defaultValue = "nome") String ordenacao,
-	      @RequestParam(defaultValue = "ASC") Sort.Direction  direcao) {
+	    @RequestParam(defaultValue = "nome") String ordenacao,
+	    @RequestParam(defaultValue = "ASC") Sort.Direction  direcao) {
 		ModelAndView modelAndView = new ModelAndView("vinhos/lista-vinhos");
 	return modelAndView.addObject("vinhos" , vinhos.findAll(new Sort(direcao, ordenacao)));
 	}
-	
-	
+		
 	@GetMapping("/novo")
 	public ModelAndView novo(Vinho vinho) {
 		ModelAndView modelAndView = new ModelAndView("vinhos/cadastro-vinho");
-		
 		modelAndView.addObject(vinho);
 		modelAndView.addObject("tipos", TipoVinho.values());		
-		
 		return modelAndView;
 	}
 	
@@ -72,9 +68,7 @@ public class VinhosController {
 		}
 		
 		vinhos.save(vinho);
-		
 		attributes.addFlashAttribute("mensagem", "Vinho salvo com sucesso!");
-		
 		return new ModelAndView("redirect:/vinhos/novo");
 	}
 	
@@ -83,31 +77,25 @@ public class VinhosController {
 		return novo(vinhos.findOne(id));
 	}
 	
-
-	  @GetMapping("/buscar")
-		public ModelAndView buscar(Vinho vinho) {
-			ModelAndView modelAndView = new ModelAndView("vinhos/busca-vinho");
-			
-			modelAndView.addObject(vinho);
-			modelAndView.addObject("tipos", TipoVinho.values());		
-			
-			return modelAndView;
-		}
+	@GetMapping("/buscar")
+	public ModelAndView buscar(Vinho vinho) {
+		ModelAndView modelAndView = new ModelAndView("vinhos/busca-vinho");
+		modelAndView.addObject(vinho);
+		modelAndView.addObject("tipos", TipoVinho.values());		
+		return modelAndView;
+	}
 	  
-		@RequestMapping("/buscar2")
+	@RequestMapping("/buscar2")
 		public String form() {
 		return "vinhos/busca-vinho2";
-		}
+	}
 	  
 	@PostMapping("/busca")
 	public ModelAndView listarnome(Vinho vinho) {
 		ModelAndView modelAndView = new ModelAndView("vinhos/lista-vinhos");
 		String nome = vinho.getNome();
-		
 		modelAndView.addObject("vinhos", vinhos.findByNomeContainingIgnoreCaseOrderByNome(nome));
-		
 		return modelAndView;
-	
 	}
 	
 	@RequestMapping("/busca2")
@@ -115,7 +103,7 @@ public class VinhosController {
 		String nome = vinho.getNome();
 		ModelAndView modelAndView = new ModelAndView("vinhos/lista-vinhos");
 		modelAndView.addObject("vinhos", vinhos.findByNomeContainingIgnoreCaseOrderByNome(nome));
-		
 		return modelAndView;
 	}
+		
 }
